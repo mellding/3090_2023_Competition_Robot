@@ -39,12 +39,19 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
 
   public static void GTA_Drive(double leftPower, double rightPower, double turn){
+    leftPrimary.setIdleMode(IdleMode.kCoast);   leftSecondary.setIdleMode(IdleMode.kCoast);
+    rightPrimary.setIdleMode(IdleMode.kCoast);  rightSecondary.setIdleMode(IdleMode.kCoast);
     leftPrimary.setOpenLoopRampRate(OPEN_LOOP_RAMP_RATE); rightPrimary.setOpenLoopRampRate(OPEN_LOOP_RAMP_RATE);
     setMotors((rightPower - leftPower) - turn, (rightPower - leftPower) + turn);
   }
 
   public static void setMotors(double leftPower, double rightPower){
     leftPrimary.set(leftPower);   rightPrimary.set(rightPower);
+  }
+
+  public static void setBrake(){
+    leftPrimary.setIdleMode(IdleMode.kBrake);   leftSecondary.setIdleMode(IdleMode.kCoast);
+    rightPrimary.setIdleMode(IdleMode.kCoast);  rightSecondary.setIdleMode(IdleMode.kCoast);
   }
 
   @Override
