@@ -37,10 +37,12 @@ public final class Constants {
     public static final double LEFT_KP                    = 0.01;
     public static final double LEFT_KI                    = 0.0;
     public static final double LEFT_KD                    = 0.0;
+    public static final double LEFT_KFF                   = 0.0;
 
     public static final double RIGHT_KP                   = 0.01;
     public static final double RIGHT_KI                   = 0.0;
     public static final double RIGHT_KD                   = 0.0;
+    public static final double RIGHT_KFF                    = 0.0;
 
 
   }
