@@ -102,7 +102,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
                                   new Pose2d());
   }
 
-  public static void GTA_Drive(double leftPower, double rightPower, double turn){
+  public void GTA_Drive(double leftPower, double rightPower, double turn){
     setCoast();
     setMotors((rightPower - leftPower) - turn, (rightPower - leftPower) + turn);
   }
