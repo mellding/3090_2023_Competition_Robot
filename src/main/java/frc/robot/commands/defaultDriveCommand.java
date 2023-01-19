@@ -16,7 +16,7 @@ public class defaultDriveCommand extends CommandBase {
   private DoubleSupplier right;
   private DoubleSupplier turn;
   
-  public defaultDriveCommand(DoubleSupplier left, DoubleSupplier right, DoubleSupplier turn, DriveTrainSubsystem driveTrain) {
+  public defaultDriveCommand(DriveTrainSubsystem driveTrain, DoubleSupplier left, DoubleSupplier right, DoubleSupplier turn) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveTrain= driveTrain;
     this.right = right;
@@ -38,7 +38,9 @@ public class defaultDriveCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+  }
 
   // Returns true when the command should end.
   @Override
