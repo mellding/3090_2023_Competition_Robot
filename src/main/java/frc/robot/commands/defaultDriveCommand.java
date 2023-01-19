@@ -23,7 +23,7 @@ public class defaultDriveCommand extends CommandBase {
     this.left = left;
     this.turn = turn;
 
-
+    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
