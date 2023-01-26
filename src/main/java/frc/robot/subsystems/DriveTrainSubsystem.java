@@ -25,7 +25,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private static final CANSparkMax leftSecondary = new CANSparkMax(DriveTrainConstants.LEFT_SECONDARY_CAN_ID, MotorType.kBrushless);
   private static final CANSparkMax rightPrimary = new CANSparkMax(DriveTrainConstants.RIGHT_PRIMARY_CAN_ID, MotorType.kBrushless);
   private static final CANSparkMax rightSecondary = new CANSparkMax(DriveTrainConstants.RIGHT_SECONDARY_CAN_ID, MotorType.kBrushless);
-  private final  DifferentialDriveOdometry driveOdometry;
+  private static DifferentialDriveOdometry driveOdometry;
   private static RelativeEncoder leftEncoder;
   private static RelativeEncoder rightEncoder;
   private static SparkMaxPIDController leftPID;
@@ -99,7 +99,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
                                   new Pose2d());
   }
 
-  public void GTA_Drive(double leftPower, double rightPower, double turn){
+  public static void GTA_Drive(double leftPower, double rightPower, double turn){
     setCoast();
     setMotors((rightPower - leftPower) - turn, (rightPower - leftPower) + turn);
   }
@@ -156,6 +156,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     if(getRightCurrent() > rightMaxCurrent) rightMaxCurrent = getRightCurrent();
 
     driveOdometry.update(Rotation2d.fromDegrees(getYaw()), leftEncoder.getPosition(), rightEncoder.getPosition());
+    
 
     SmartDashboard.putNumber("Left Position", leftEncoder.getPosition());
     SmartDashboard.putNumber("Right Position", rightEncoder.getPosition());

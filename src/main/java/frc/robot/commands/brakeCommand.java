@@ -4,22 +4,16 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class defaultDriveCommand extends CommandBase {
-  /** Creates a new defaultDriveCommand. */
-  private DoubleSupplier left;
-  private DoubleSupplier right;
-  private DoubleSupplier turn;
-  
-  public defaultDriveCommand(DriveTrainSubsystem driveTrain, DoubleSupplier left, DoubleSupplier right, DoubleSupplier turn) {
+public class brakeCommand extends CommandBase {
+  DriveTrainSubsystem driveTrain;
+
+  /** Creates a new brakeCommand. */
+  public brakeCommand(DriveTrainSubsystem driveTrain) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.right = right;
-    this.left = left;
-    this.turn = turn;
+    this.driveTrain = driveTrain;
 
     addRequirements(driveTrain);
   }
@@ -31,14 +25,12 @@ public class defaultDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    DriveTrainSubsystem.GTA_Drive(left.getAsDouble(), right.getAsDouble(), turn.getAsDouble());
+    DriveTrainSubsystem.setBrake();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

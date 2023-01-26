@@ -5,8 +5,11 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.brakeCommand;
 import frc.robot.commands.defaultDriveCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -26,15 +29,28 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+  private SendableChooser<String> controlChooser;
+  private final String xbox = "xbox";
+  private final String joystick = "joystick";
+  
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    driveTrain.setDefaultCommand(new defaultDriveCommand(driveTrain,
+    configureBindings();
+
+    controlChooser = new SendableChooser<>();
+    controlChooser.addOption("xbox", xbox);
+    controlChooser.addOption("joystick", joystick);
+    SmartDashboard.putData(controlChooser);
+
+    if(controlChooser.getSelected().equals(xbox)){
+        driveTrain.setDefaultCommand(new defaultDriveCommand(driveTrain,
                                                           () -> m_driverController.getLeftTriggerAxis(), 
                                                           () -> m_driverController.getRightTriggerAxis(), 
                                                           () -> m_driverController.getRightY()));
+    }else if(controlChooser.getSelected().equals(joystick)){
 
-    // Configure the trigger bindings
-    configureBindings();
+    }
   }
 
   /**
@@ -54,6 +70,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    m_driverController.b().whileTrue(new brakeCommand(driveTrain));
   }
 
   /**
