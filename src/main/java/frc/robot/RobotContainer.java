@@ -10,10 +10,8 @@ import frc.robot.commands.brakeCommand;
 import frc.robot.commands.defaultDriveCommand;
 import frc.robot.subsystems.DashboardSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -27,11 +25,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveTrainSubsystem driveTrain = new DriveTrainSubsystem();
+  DashboardSubsystem dashboard = new DashboardSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  private final Joystick joystickController = new Joystick(OperatorConstants.kDriverControllerPort + 1);
+  private final CommandJoystick joystickController = new CommandJoystick(OperatorConstants.kDriverControllerPort + 1);
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
