@@ -104,6 +104,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     setMotors((rightPower - leftPower) - turn, (rightPower - leftPower) + turn);
   }
 
+  public static void joystickDrive(double power, double turn) {
+    setCoast();
+    setMotors(power - turn, power + turn);
+  }
+
   public static void GTA_Drive_Slow(double leftPower, double rightPower, double turn){
     setCoast();
     double rightPowerSlow = mapDouble((rightPower - leftPower) + turn, -2, 2, 
@@ -164,4 +169,5 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     
   }
+
 }

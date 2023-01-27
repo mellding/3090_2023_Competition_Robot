@@ -5,9 +5,12 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.JoystickDriveCommand;
 import frc.robot.commands.brakeCommand;
 import frc.robot.commands.defaultDriveCommand;
+import frc.robot.subsystems.DashboardSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,29 +31,22 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
-  private SendableChooser<String> controlChooser;
-  private final String xbox = "xbox";
-  private final String joystick = "joystick";
+  private final Joystick joystickController = new Joystick(OperatorConstants.kDriverControllerPort + 1);
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     configureBindings();
+    configureControlMode();
 
-    controlChooser = new SendableChooser<>();
-    controlChooser.addOption("xbox", xbox);
-    controlChooser.addOption("joystick", joystick);
-    SmartDashboard.putData(controlChooser);
-
-    if(controlChooser.getSelected().equals(xbox)){
-        driveTrain.setDefaultCommand(new defaultDriveCommand(driveTrain,
+    /*
+    driveTrain.setDefaultCommand(new defaultDriveCommand(driveTrain,
                                                           () -> m_driverController.getLeftTriggerAxis(), 
                                                           () -> m_driverController.getRightTriggerAxis(), 
                                                           () -> m_driverController.getRightY()));
-    }else if(controlChooser.getSelected().equals(joystick)){
+   */
 
-    }
+    
   }
 
   /**
@@ -62,6 +58,16 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
+
+  private void configureControlMode(){
+    new Trigger(DashboardSubsystem::xbox).onTrue(new defaultDriveCommand(driveTrain,
+                                                  () -> m_driverController.getLeftTriggerAxis(), 
+                                                  () -> m_driverController.getRightTriggerAxis(), 
+                                                  () -> m_driverController.getRightY()));
+    new Trigger(DashboardSubsystem::joystick).onTrue(new JoystickDriveCommand(driveTrain, 
+                                                          () -> joystickController.getY(),
+                                                          () -> joystickController.getX()));        
+  }
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     //new Trigger(m_exampleSubsystem::exampleCondition)
