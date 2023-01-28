@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.JoystickDriveCommand;
 import frc.robot.commands.brakeCommand;
 import frc.robot.commands.defaultDriveCommand;
+import frc.robot.commands.straightHelpDrive;
 import frc.robot.subsystems.DashboardSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,7 +37,11 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     configureBindings();
-    configureControlMode();
+
+    driveTrain.setDefaultCommand(new straightHelpDrive(driveTrain,
+                                  () -> m_driverController.getLeftTriggerAxis(), 
+                                  () -> m_driverController.getRightTriggerAxis(), 
+                                  () -> m_driverController.getRightY()));
 
     /*
     driveTrain.setDefaultCommand(new defaultDriveCommand(driveTrain,
@@ -58,15 +63,6 @@ public class RobotContainer {
    * joysticks}.
    */
 
-  private void configureControlMode(){
-    new Trigger(DashboardSubsystem::xbox).onTrue(new defaultDriveCommand(driveTrain,
-                                                  () -> m_driverController.getLeftTriggerAxis(), 
-                                                  () -> m_driverController.getRightTriggerAxis(), 
-                                                  () -> m_driverController.getRightY()));
-    new Trigger(DashboardSubsystem::joystick).onTrue(new JoystickDriveCommand(driveTrain, 
-                                                          () -> joystickController.getY(),
-                                                          () -> joystickController.getX()));        
-  }
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     //new Trigger(m_exampleSubsystem::exampleCondition)

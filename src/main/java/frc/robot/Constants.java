@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.commands.straightHelpDrive;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -22,6 +24,7 @@ public final class Constants {
     public static final int RIGHT_SECONDARY_CAN_ID        = 13;
     public static final int MOTOR_ENCODER_CPR             = 42;
     public static final int MOTOR_CURRENT_LIMIT           = 40;
+    public static final int MOTOR_MAX_RPM                 = 5600;
 
     public static final double OPEN_LOOP_RAMP_RATE        = 1.0;
     public static final double SLOW_DRIVE_MAX             = 0.375;

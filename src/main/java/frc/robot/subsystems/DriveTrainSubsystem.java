@@ -8,6 +8,7 @@ import com.ctre.phoenix.sensors.Pigeon2;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -104,6 +105,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     setMotors((rightPower - leftPower) - turn, (rightPower - leftPower) + turn);
   }
 
+  public static void GTA_Drive_Velocity_Control(double leftPower, double rightPower, double turn){
+    setCoast();
+    setVelocities((rightPower - leftPower) - turn, (rightPower - leftPower) + turn);
+  }
+
   public static void joystickDrive(double power, double turn) {
     setCoast();
     setMotors(power - turn, power + turn);
@@ -123,6 +129,18 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public static void setMotors(double leftPower, double rightPower){
     leftPrimary.set(leftPower);   rightPrimary.set(rightPower);
   }
+
+  public static void setPositions(double leftSetPoint, double rightSetPoint){
+    leftPID.setReference(leftSetPoint, ControlType.kPosition);
+    rightPID.setReference(rightSetPoint, ControlType.kPosition);
+  }
+
+  public static void setVelocities(double leftSpeed, double rightSpeed){
+    leftPID.setReference(leftSpeed * DriveTrainConstants.MOTOR_MAX_RPM, ControlType.kVelocity);
+    rightPID.setReference(rightSpeed * DriveTrainConstants.MOTOR_MAX_RPM, ControlType.kVelocity);
+  }
+
+
 
   public static void setCoast(){
     leftPrimary.setIdleMode(IdleMode.kCoast);   leftSecondary.setIdleMode(IdleMode.kCoast);

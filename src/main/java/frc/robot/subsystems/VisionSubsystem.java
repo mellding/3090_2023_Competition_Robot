@@ -4,47 +4,50 @@
 
 package frc.robot.subsystems;
 
-import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonTrackedTarget;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
-  private static final PhotonCamera limeLight = new PhotonCamera("photonvision");
   private static boolean hasTarget;
-  private static double pitch;
-  private static double yaw;
+  private static double y;
+  private static double x;
   private static double area;
+  private static NetworkTable table;
+  private static NetworkTableEntry tv;
+  private static NetworkTableEntry tx;
+  private static NetworkTableEntry ty;
+  private static NetworkTableEntry ta;
 
   /** Creates a new VisionSubsystem. */
-  public VisionSubsystem() {}
-
-  public boolean hasTargets(){
-    return hasTarget;
+  public VisionSubsystem() {
+    table = NetworkTableInstance.getDefault().getTable("limelight");
+    tv = table.getEntry("tv");
+    tx = table.getEntry("tx");
+    ty = table.getEntry("ty");
+    ta = table.getEntry("ta");    
   }
-
-  public double getPitch(){
-    return pitch;
-  }
-
-  public double getYaw(){
-    return yaw;
-  }
-
-  public double getArea(){
-    return area;
-  }
+  
+  public static boolean hasTarget(){return hasTarget;}
+  public static double getPitch(){return y;}
+  public static double getYaw(){return x;}
+  public static double getArea(){return area;}
 
   @Override
   public void periodic() {
-    var results = limeLight.getLatestResult();
-
-    hasTarget = results.hasTargets();
-    if(hasTarget){
-      PhotonTrackedTarget target = results.getBestTarget();
-      pitch = target.getPitch();
-      yaw = target.getYaw();
-      area = target.getArea();
-    }
+    //read values periodically
+    hasTarget = tv.getBoolean(false);
+    x = tx.getDouble(0.0);
+    y = ty.getDouble(0.0);
+    area = ta.getDouble(0.0);
+    
+    //post to smart dashboard periodically
+    SmartDashboard.putBoolean("Has Target", hasTarget);
+    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putNumber("LimelightY", y);
+    SmartDashboard.putNumber("LimelightArea", area);
   }
 }
