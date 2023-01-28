@@ -10,6 +10,10 @@ import frc.robot.subsystems.VisionSubsystem;
 
 public class followTargetCommand extends CommandBase {
   /** Creates a new followTargetCommand. */
+  double areaSetPoint = 1.0;
+  double areaKp = .1;
+  double yawKp  = .1;
+
   public followTargetCommand(DriveTrainSubsystem driveTrain, VisionSubsystem vision) {
     // Use addRequirements() here to declare subsystem dependencies.
 
@@ -24,7 +28,13 @@ public class followTargetCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    if(VisionSubsystem.hasTarget()){
+      double areaError = areaSetPoint - VisionSubsystem.getArea();
+      double yawError = 0 - VisionSubsystem.getYaw();
+      DriveTrainSubsystem.setVelocities((areaError * areaKp) - (yawError * yawKp), (areaError * areaKp) + (yawError * yawKp));
+    }else{
+      DriveTrainSubsystem.setVelocities(0, 0);
+    }
   }
 
   // Called once the command ends or is interrupted.
