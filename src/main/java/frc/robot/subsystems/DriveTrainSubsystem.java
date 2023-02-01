@@ -15,9 +15,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.networktables.PubSub;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveTrainConstants;
+import frc.robot.commands.straightHelpDrive;
 
 public class DriveTrainSubsystem extends SubsystemBase {
   /** Creates a new DriveTrainSubsystem. */
@@ -140,8 +142,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     rightPID.setReference(rightSpeed * DriveTrainConstants.MOTOR_MAX_RPM, ControlType.kVelocity);
   }
 
-
-
   public static void setCoast(){
     leftPrimary.setIdleMode(IdleMode.kCoast);   leftSecondary.setIdleMode(IdleMode.kCoast);
     rightPrimary.setIdleMode(IdleMode.kCoast);  rightSecondary.setIdleMode(IdleMode.kCoast);
@@ -159,6 +159,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
   
   public static double getLeftPosition(){return leftEncoder.getPosition();}
   public static double getRightPosition(){return rightEncoder.getPosition();}
+  public static double getLeftPosition_IN(){return leftEncoder.getPosition() / DriveTrainConstants.DRIVE_COUNTS_PER_INCH;}
+  public static double getRightPosition_IN(){return rightEncoder.getPosition() / DriveTrainConstants.DRIVE_COUNTS_PER_INCH;}
+  public static double getLeftPosition_FT(){return getLeftPosition_IN() / 12;}
+  public static double getRightPosition_FT(){return getRightPosition_IN() / 12;}
   public static double getLeftVelocity(){return leftEncoder.getVelocity();}
   public static double getRightVelovity(){return rightEncoder.getVelocity();}
   public static double getLeftCurrent(){return (leftPrimary.getOutputCurrent() + leftSecondary.getOutputCurrent()) / 2;}
@@ -184,8 +188,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Left Position", leftEncoder.getPosition());
     SmartDashboard.putNumber("Right Position", rightEncoder.getPosition());
     SmartDashboard.putNumber("Yaw", pigeonIMU.getYaw());
-
-    
   }
 
 }

@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.commands.straightHelpDrive;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -31,10 +29,13 @@ public final class Constants {
     public static final double WHEEL_DIAMETER_IN          = 6.0;
     public static final double WHEEL_DIAMETER_FT          = WHEEL_DIAMETER_IN / 12.0;
     public static final double WHEEL_CIRCUMFRENCE_IN      = Math.PI * WHEEL_DIAMETER_IN;
-    public static final double WHEEL_CIRCUMFRENCE_FT      = Math.PI * WHEEL_DIAMETER_FT;
     public static final double DRIVE_GEAR_RATIO           = 8.46;
+    public static final double WHEEL_CPR                  = MOTOR_ENCODER_CPR * DRIVE_GEAR_RATIO;
+    public static final double DRIVE_COUNTS_PER_INCH      = WHEEL_CPR / WHEEL_CIRCUMFRENCE_IN;
+    public static final double WHEEL_CIRCUMFRENCE_FT      = Math.PI * WHEEL_DIAMETER_FT;
     public static final double DRIVE_TRAIN_WIDTH          = 27;//????
     public static final double ENCODER_CONVERSION_FACTOR  = 1/DRIVE_GEAR_RATIO * WHEEL_CIRCUMFRENCE_FT;
+
 
     public static final double LEFT_KP                    = 0.01;
     public static final double LEFT_KI                    = 0.0;
