@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.networktables.PubSub;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveTrainConstants;
@@ -34,7 +35,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private static SparkMaxPIDController leftPID;
   private static SparkMaxPIDController rightPID;
 
- 
+  private static DifferentialDrive diffDrive = new DifferentialDrive(leftPrimary, rightPrimary);
+
   private static double leftMaxCurrent = 0.0;
   private static double rightMaxCurrent = 0.0;
 
@@ -156,13 +158,21 @@ public class DriveTrainSubsystem extends SubsystemBase {
     rightPrimary.setOpenLoopRampRate(0);
     setMotors(0, 0);
   }
+
+  public static void arcadeDrive(double power, double turn){
+    diffDrive.arcadeDrive(power, turn);
+  }
+
+  public static void  curvatureDrive(double power, double turn, boolean spin){
+    diffDrive.curvatureDrive(power, turn, spin);
+  }
   
   public static double getLeftPosition(){return leftEncoder.getPosition();}
   public static double getRightPosition(){return rightEncoder.getPosition();}
   public static double getLeftPosition_IN(){return leftEncoder.getPosition() / DriveTrainConstants.DRIVE_COUNTS_PER_INCH;}
   public static double getRightPosition_IN(){return rightEncoder.getPosition() / DriveTrainConstants.DRIVE_COUNTS_PER_INCH;}
-  public static double getLeftPosition_FT(){return getLeftPosition_IN() / 12;}
-  public static double getRightPosition_FT(){return getRightPosition_IN() / 12;}
+  public static double getLeftPosition_FT(){return getLeftPosition_IN() / DriveTrainConstants.DRIVE_COUNTS_PER_FT;}
+  public static double getRightPosition_FT(){return getRightPosition_IN() / DriveTrainConstants.DRIVE_COUNTS_PER_FT;}
   public static double getLeftVelocity(){return leftEncoder.getVelocity();}
   public static double getRightVelovity(){return rightEncoder.getVelocity();}
   public static double getLeftCurrent(){return (leftPrimary.getOutputCurrent() + leftSecondary.getOutputCurrent()) / 2;}
