@@ -37,6 +37,7 @@ public final class Constants {
     public static final double DRIVE_TRAIN_WIDTH          = 27;//????
     public static final double ENCODER_CONVERSION_FACTOR  = 1/DRIVE_GEAR_RATIO * WHEEL_CIRCUMFRENCE_FT;
 
+    public static final double TURN_POWER_SCALAR          = 4;
 
     public static final double LEFT_KP                    = 0.01;
     public static final double LEFT_KI                    = 0.0;

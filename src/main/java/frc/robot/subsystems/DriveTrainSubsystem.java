@@ -106,7 +106,20 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   public static void GTA_Drive(double leftPower, double rightPower, double turn){
     setCoast();
-    setMotors((rightPower - leftPower) - turn, (rightPower - leftPower) + turn);
+
+    double power = rightPower - leftPower;
+    double turnPower;
+    if(turn < 0) turnPower = -(turn * (1 / (1 + power * DriveTrainConstants.TURN_POWER_SCALAR)));
+      else turnPower = turn * (1 / (1 + power * DriveTrainConstants.TURN_POWER_SCALAR));
+    double leftPow = power - turnPower;
+    double rightPow = power + turnPower;
+
+    if(leftPow < 0) leftPow = -(leftPow * leftPow);
+      else leftPow = leftPow * leftPow;
+    if(rightPow < 0) rightPow = -(rightPow * rightPow);
+      else rightPow = rightPow * rightPow;
+
+    setMotors(leftPow, rightPow);
   }
 
   public static void GTA_Drive_Velocity_Control(double leftPower, double rightPower, double turn){
