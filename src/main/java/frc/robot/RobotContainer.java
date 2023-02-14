@@ -44,13 +44,13 @@ public class RobotContainer {
                                   () -> m_driverController.getLeftTriggerAxis(), 
                                   () -> m_driverController.getRightTriggerAxis(), 
                                   () -> m_driverController.getRightY()));
-
-    /*
+*/
+    
     driveTrain.setDefaultCommand(new defaultDriveCommand(driveTrain,
-                                                          () -> m_driverController.getLeftTriggerAxis(), 
-                                                          () -> m_driverController.getRightTriggerAxis(), 
-                                                          () -> m_driverController.getRightY()));
-   */
+                                  () -> m_driverController.getLeftTriggerAxis(), 
+                                  () -> m_driverController.getRightTriggerAxis(), 
+                                  () -> m_driverController.getRightY()));
+   
 
     
   }
