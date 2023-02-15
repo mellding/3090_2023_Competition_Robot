@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.commands.straightHelpDrive;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -55,7 +57,19 @@ public final class Constants {
   }
 
   public static class ArmConstants{
-    
+    public static final int ROTATE_ENCODER_CPR            = 40;
+    public static final int ROTATE_GEAR_RATIO             = 64;
+    public static final int ROTATE_CPR                    = ROTATE_ENCODER_CPR * ROTATE_GEAR_RATIO;
+    public static final int ROTATE_COUNTS_PER_DEGREE      = ROTATE_CPR / 360;
+    public static final int ROTATE_UPPER_LIMIT            = 90 * ROTATE_COUNTS_PER_DEGREE;
+    public static final int ROTATE_LOWER_LIMIT            = -90 * ROTATE_COUNTS_PER_DEGREE;
+
+    public static final double TILT_RAMP_RATE = .5;
+
+    public static final double tiltKp = .01;
+    public static final double rotateKp = .01;
+
+
   }
 
   public static class OperatorConstants {
