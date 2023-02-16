@@ -38,6 +38,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private static double leftMaxCurrent = 0.0;
   private static double rightMaxCurrent = 0.0;
 
+  private static double turnSetpoint;
+  private static double turnError = 0;
 
   public DriveTrainSubsystem() {
     leftPrimary.restoreFactoryDefaults();      leftSecondary.restoreFactoryDefaults();
@@ -91,7 +93,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     leftPrimary.burnFlash(); leftSecondary.burnFlash();
     rightPrimary.burnFlash(); rightSecondary.burnFlash();
 
-
     driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getYaw()), 
                                                     leftEncoder.getPosition(), 
                                                     rightEncoder.getPosition());
@@ -100,15 +101,24 @@ public class DriveTrainSubsystem extends SubsystemBase {
                                   leftEncoder.getPosition(), 
                                   rightEncoder.getPosition(), 
                                   new Pose2d());
+
+    turnSetpoint = pigeonIMU.getYaw();
   }
 
   public static void GTA_Drive(double leftPower, double rightPower, double turn){
     setCoast();
 
     double power = rightPower - leftPower;
-    double turnPower;
-    if(turn < 0) turnPower = -(turn * (1 / (1 + power * DriveTrainConstants.TURN_POWER_SCALAR)));
+    double turnPower = 0;
+    if(turn != 0){
+      if(turn < 0) turnPower = -(turn * (1 / (1 + power * DriveTrainConstants.TURN_POWER_SCALAR)));
       else turnPower = turn * (1 / (1 + power * DriveTrainConstants.TURN_POWER_SCALAR));
+      turnSetpoint = pigeonIMU.getYaw();
+    }else{
+      turnError = turnSetpoint - pigeonIMU.getYaw();
+      turnPower = turnError * DriveTrainConstants.turnKp;
+    }
+
     double leftPow = power - turnPower;
     double rightPow = power + turnPower;
 

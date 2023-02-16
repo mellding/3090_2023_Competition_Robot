@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.commands.straightHelpDrive;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -54,22 +52,40 @@ public final class Constants {
     public static final double PID_MAX                    = 1.0;
     public static final double CLOSED_LOOP_RAMP           = 2.0;
 
+    public static final double turnKp                     = .01;
   }
 
   public static class ArmConstants{
-    public static final int ROTATE_ENCODER_CPR            = 40;
-    public static final int ROTATE_GEAR_RATIO             = 64;
-    public static final int ROTATE_CPR                    = ROTATE_ENCODER_CPR * ROTATE_GEAR_RATIO;
-    public static final int ROTATE_COUNTS_PER_DEGREE      = ROTATE_CPR / 360;
-    public static final int ROTATE_UPPER_LIMIT            = 90 * ROTATE_COUNTS_PER_DEGREE;
-    public static final int ROTATE_LOWER_LIMIT            = -90 * ROTATE_COUNTS_PER_DEGREE;
+    public static final double ROTATE_ENCODER_CPR            = 40;
+    public static final double ROTATE_GEAR_RATIO             = 64;
+    public static final double ROTATE_CPR                    = ROTATE_ENCODER_CPR * ROTATE_GEAR_RATIO;
+    public static final double ROTATE_COUNTS_PER_DEGREE      = ROTATE_CPR / 360;
+    public static final double ROTATE_UPPER_LIMIT            = 180;
+    public static final double ROTATE_LOWER_LIMIT            = -180;
 
-    public static final double TILT_RAMP_RATE = .5;
+    public static final double TILT_GEAR_RATIO               = 100;
+    public static final double TILT_ENCODER_CPR              = 1;
+    public static final double TILT_CPR                      = TILT_ENCODER_CPR * TILT_GEAR_RATIO;
+    public static final double TILT_COUNTS_PER_DEGREE        = TILT_CPR / 360;
+    public static final double TILT_UPPER_LIMIT              = 90;
+    public static final double TILT_LOWER_LIMIT              = 0;
 
-    public static final double tiltKp = .01;
-    public static final double rotateKp = .01;
+    public static final double EXTEND_GEAR_RATIO             = 16;
+    public static final double EXTEND_COUNTS_PER_INCH        = (1.754 * Math.PI) * EXTEND_GEAR_RATIO;
+    public static final double EXTENT_UPPER_LIMIT            = 18;
+    public static final double EXTEND_LOWER_LIMIT            = 0;
 
+    public static final double TILT_RAMP_RATE                = .5;
+    public static final double ROTATE_RAMP_RATE              = .5;
+    public static final double EXTEND_RAMP_RATE              = .5;
 
+    public static final int TILT_MAX_CURRENT                 = 5;
+    public static final int ROTATE_MAX_CURRENT               = 5;
+    public static final int EXTEND_MAX_CURRENT               = 5;
+
+    public static final double tiltKp                        = .01;
+    public static final double rotateKp                      = .01;
+    public static final double extentKp                      = .01;
   }
 
   public static class OperatorConstants {
