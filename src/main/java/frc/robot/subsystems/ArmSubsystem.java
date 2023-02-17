@@ -84,10 +84,11 @@ public class ArmSubsystem extends SubsystemBase {
     grabberIsOpen = false;
   }
 
+  
   public static void tilt(double power){
     if( (power > 0 && getTiltDegrees() >= ArmConstants.TILT_UPPER_LIMIT)  ||
-          (power < 0 && getTiltDegrees() <= ArmConstants.TILT_LOWER_LIMIT) ) return;
-
+    (power < 0 && getTiltDegrees() <= ArmConstants.TILT_LOWER_LIMIT) ) return;
+    
     if(power != 0){
       tiltMotor.set(power);
       tiltSetpoint = tiltEncoder.getPosition();
@@ -96,19 +97,20 @@ public class ArmSubsystem extends SubsystemBase {
       tiltMotor.set(tiltError * ArmConstants.tiltKp);
     }
   }
-
+  
   public static void setTiltPos(double setpoint){
     if(setpoint >= ArmConstants.TILT_UPPER_LIMIT ||
-        setpoint <= ArmConstants.TILT_LOWER_LIMIT) return;
+    setpoint <= ArmConstants.TILT_LOWER_LIMIT) return;
     tiltSetpoint = setpoint;
     tiltError = setpoint - getTiltDegrees();
     tiltMotor.set(tiltError * ArmConstants.tiltKp);
   }
-
+  
+  
   public static void rotate(double power){
     if( (power > 0 && getRotateDegrees() >= ArmConstants.ROTATE_UPPER_LIMIT) ||
-          (power < 0  && getRotateDegrees() <= ArmConstants.ROTATE_LOWER_LIMIT) ) return;
-
+    (power < 0  && getRotateDegrees() <= ArmConstants.ROTATE_LOWER_LIMIT) ) return;
+    
     if(power != 0){
       rotateMotor.set(power);
       rotateSetpoint = rotateEncoder.getDistance();
@@ -117,39 +119,58 @@ public class ArmSubsystem extends SubsystemBase {
       rotateMotor.set(rotateError * ArmConstants.rotateKp);
     }
   }
-
+  
   public static void setRotatePos(double setPoint){
     if(setPoint >= ArmConstants.ROTATE_UPPER_LIMIT ||
-        setPoint <= ArmConstants.ROTATE_LOWER_LIMIT) return;
+    setPoint <= ArmConstants.ROTATE_LOWER_LIMIT) return;
     rotateSetpoint = setPoint;
     rotateError = setPoint - getRotateDegrees();
     rotateMotor.set(rotateError * ArmConstants.rotateKp);
   }
 
+  public static void extend(double power){
+    if( (power > 0 && getExtendDistance() >= ArmConstants.EXTENT_UPPER_LIMIT) ||
+          (power < 0 && getExtendDistance() <= ArmConstants.EXTEND_LOWER_LIMIT) ) return;
+    if(power != 0){
+      extendMotor.set(power);
+      extendSetpoint = extendEncoder.getPosition();
+    }else{
+      extendError = extendSetpoint - extendEncoder.getPosition();
+      extendMotor.set(extendError * ArmConstants.extentKp);
+    }
+  }
+  
   public static double getTiltSetpoint(){return tiltSetpoint;}
   public static double getTiltError(){return tiltError;}
   public static double getTiltPosition(){return tiltEncoder.getPosition();}
   public static double getTiltDegrees(){return tiltEncoder.getPosition() / ArmConstants.TILT_COUNTS_PER_DEGREE;}
   public static double getTiltMotorTemp(){return tiltMotor.getMotorTemperature();}
-
-
+  public static void tiltHome(){tiltEncoder.setPosition(0);}
+  
+  
   public static double getRotateSetpoint(){return rotateSetpoint;}
   public static double getRotateError(){return rotateError;}
   public static double getRotatePosition(){return rotateEncoder.getDistance();}
   public static double getRotateDegrees(){return rotateEncoder.getDistance() / ArmConstants.ROTATE_COUNTS_PER_DEGREE;}
-
+  public static void rotateHome(){rotateEncoder.reset();}
+  
   public static double getExtendSetpoint(){return extendSetpoint;}
   public static double getExtendError(){return extendError;}
   public static double getExtendPosition(){return extendEncoder.getPosition();}
   public static double getExtendDistance(){return extendEncoder.getPosition() / ArmConstants.EXTEND_COUNTS_PER_INCH;}
   public static double getExtendMotorTemp(){return extendMotor.getMotorTemperature();}
-
+  
+  
   public static boolean getGrabberOpen(){return grabberIsOpen;}
+
   public static double getHiPressure(){
     return 250 * (hiPressure.getVoltage() / 5) - 25;
   }
 
-  @Override
+  public static double getLoPressure(){
+    return 250 * (loPressure.getVoltage() / 5) - 25;
+  }
+  
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Tilt Temp", getTiltMotorTemp());
