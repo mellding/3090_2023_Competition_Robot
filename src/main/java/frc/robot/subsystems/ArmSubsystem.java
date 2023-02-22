@@ -84,8 +84,11 @@ public class ArmSubsystem extends SubsystemBase {
     grabberIsOpen = false;
   }
 
+
   
   public static void tilt(double power){
+    if((getAdjacent() >= 48) && power > 0) setExtendPos(getMaxExtention()); 
+    
     if( (power > 0 && getTiltDegrees() >= ArmConstants.TILT_UPPER_LIMIT)  ||
     (power < 0 && getTiltDegrees() <= ArmConstants.TILT_LOWER_LIMIT) ) return;
     
@@ -129,6 +132,8 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public static void extend(double power){
+    if((getAdjacent() >= 48) && power > 0) return; 
+
     if( (power > 0 && getExtendDistance() >= ArmConstants.EXTENT_UPPER_LIMIT) ||
           (power < 0 && getExtendDistance() <= ArmConstants.EXTEND_LOWER_LIMIT) ) return;
     if(power != 0){
@@ -139,6 +144,14 @@ public class ArmSubsystem extends SubsystemBase {
       extendMotor.set(extendError * ArmConstants.extentKp);
     }
   }
+
+  public static void setExtendPos(double setPoint){
+    extendSetpoint = setPoint;
+    extendError = extendSetpoint - extendEncoder.getPosition();
+    extendMotor.set(extendError * ArmConstants.extentKp); 
+  }
+
+
   
   public static double getTiltSetpoint(){return tiltSetpoint;}
   public static double getTiltError(){return tiltError;}
@@ -147,7 +160,14 @@ public class ArmSubsystem extends SubsystemBase {
   public static double getTiltMotorTemp(){return tiltMotor.getMotorTemperature();}
   public static void tiltHome(){tiltEncoder.setPosition(0);}
   
+  public static double getAdjacent(){
+    return Math.cos(getTiltDegrees()) * getExtendDistance();
+  }
   
+  public static double getMaxExtention(){
+    return Math.cos(getTiltDegrees()) / 48.0;
+  }
+
   public static double getRotateSetpoint(){return rotateSetpoint;}
   public static double getRotateError(){return rotateError;}
   public static double getRotatePosition(){return rotateEncoder.getDistance();}

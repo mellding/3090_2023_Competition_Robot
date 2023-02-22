@@ -105,6 +105,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     turnSetpoint = pigeonIMU.getYaw();
   }
 
+  public static void arcadeDrive(double leftPower, double rightPower, double Turn) {
+    diffDrive.arcadeDrive(rightPower - leftPower, Turn);
+  }
+
   public static void GTA_Drive(double leftPower, double rightPower, double turn){
     setCoast();
 
