@@ -87,7 +87,6 @@ public class ArmSubsystem extends SubsystemBase {
 
   
   public static void tilt(double power){
-    if((getAdjacent() >= 48) && power > 0) setExtendPos(getMaxExtention()); 
     
     if( (power > 0 && getTiltDegrees() >= ArmConstants.TILT_UPPER_LIMIT)  ||
     (power < 0 && getTiltDegrees() <= ArmConstants.TILT_LOWER_LIMIT) ) return;
@@ -99,6 +98,8 @@ public class ArmSubsystem extends SubsystemBase {
       tiltError = tiltSetpoint - tiltEncoder.getPosition();
       tiltMotor.set(tiltError * ArmConstants.tiltKp);
     }
+
+    if(getAdjacent() >= 48) setExtendPos(getMaxExtention()); 
   }
   
   public static void setTiltPos(double setpoint){
@@ -161,11 +162,11 @@ public class ArmSubsystem extends SubsystemBase {
   public static void tiltHome(){tiltEncoder.setPosition(0);}
   
   public static double getAdjacent(){
-    return Math.cos(getTiltDegrees()) * getExtendDistance();
+    return Math.cos(Math.toRadians(getTiltDegrees())) * getExtendDistance();
   }
   
   public static double getMaxExtention(){
-    return Math.cos(getTiltDegrees()) / 48.0;
+    return Math.cos(Math.toRadians(getTiltDegrees())) / 48.0;
   }
 
   public static double getRotateSetpoint(){return rotateSetpoint;}
